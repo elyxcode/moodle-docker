@@ -8,7 +8,8 @@ ENV DB_HOST=${DATABASE_HOST} \
     DB_NAME=${DATABASE_NAME} \
     DB_PASSWORD=${DATABASE_PASSWORD} \
     DB_TYPE=pgsql \
-    DB_SSL_MODE=require \
+    DB_SSL=true \
+    DB_SSL_MODE=verify-full \
     ALLOW_EMPTY_PASSWORD=no
 
 # Puerto expuesto (Render usa 8080 por defecto)
