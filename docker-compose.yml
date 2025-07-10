@@ -7,22 +7,18 @@ services:
       - MARIADB_DATABASE=bitnami_moodle
       - MARIADB_CHARACTER_SET=utf8mb4
       - MARIADB_COLLATE=utf8mb4_unicode_ci
-    volumes:
-      - /var/lib/mysql  # Render usa volúmenes persistentes automáticamente.
-  
+    # Render usa persistencia automática para /bitnami/mariadb.
+
   moodle:
     image: docker.io/bitnami/moodle:5.0
     ports:
-      - '80:8080'
-      - '443:8443'
+      - '80:8080'  # Render asigna puerto automáticamente.
     environment:
       - MOODLE_DATABASE_HOST=mariadb
       - MOODLE_DATABASE_PORT_NUMBER=3306
       - MOODLE_DATABASE_USER=bn_moodle
       - MOODLE_DATABASE_NAME=bitnami_moodle
       - ALLOW_EMPTY_PASSWORD=yes
-    volumes:
-      - /bitnami/moodle  # Persistencia automática en Render.
     depends_on:
       - mariadb
 
