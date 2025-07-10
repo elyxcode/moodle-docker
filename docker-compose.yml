@@ -1,26 +1,20 @@
+# docker-compose.yml (simplificado solo para Moodle)
+version: '3'
 services:
-  mariadb:
-    image: docker.io/bitnami/mariadb:latest
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
-      - MARIADB_USER=bn_moodle
-      - MARIADB_DATABASE=bitnami_moodle
-      - MARIADB_CHARACTER_SET=utf8mb4
-      - MARIADB_COLLATE=utf8mb4_unicode_ci
-    # Render usa persistencia automática para /bitnami/mariadb.
-
   moodle:
     image: docker.io/bitnami/moodle:5.0
     ports:
-      - '80:8080'  # Render asigna puerto automáticamente.
+      - '8080:8080'  # Render usa el puerto 8080 por defecto.
     environment:
-      - MOODLE_DATABASE_HOST=mariadb
-      - MOODLE_DATABASE_PORT_NUMBER=3306
-      - MOODLE_DATABASE_USER=bn_moodle
-      - MOODLE_DATABASE_NAME=bitnami_moodle
-      - ALLOW_EMPTY_PASSWORD=yes
-    depends_on:
-      - mariadb
+      - MOODLE_DATABASE_HOST=${DATABASE_HOST}  # Lo configurarás en Render.
+      - MOODLE_DATABASE_PORT_NUMBER=5432       # Puerto de PostgreSQL.
+      - MOODLE_DATABASE_USER=${DATABASE_USER}
+      - MOODLE_DATABASE_NAME=${DATABASE_NAME}
+      - MOODLE_DATABASE_PASSWORD=${DATABASE_PASSWORD}
+    volumes:
+      - moodle_data:/bitnami/moodle  # Volumen para persistencia.
+volumes:
+  moodle_data:  # Render gestiona volúmenes automáticamente.
 
 # # Copyright Broadcom, Inc. All Rights Reserved.
 # # SPDX-License-Identifier: APACHE-2.0
