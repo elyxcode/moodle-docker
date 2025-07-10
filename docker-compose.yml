@@ -1,50 +1,32 @@
-# docker-compose.yml (simplificado solo para Moodle)
-version: '3'
+# Copyright Broadcom, Inc. All Rights Reserved.
+# SPDX-License-Identifier: APACHE-2.0
+
 services:
+  mariadb:
+    image: docker.io/bitnami/mariadb:latest
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_USER=bn_moodle
+      - MARIADB_DATABASE=bitnami_moodle
+      - MARIADB_CHARACTER_SET=utf8mb4
+      - MARIADB_COLLATE=utf8mb4_unicode_ci
+    volumes:
+      - './mariadb-data:/bitnami/mariadb'
   moodle:
     image: docker.io/bitnami/moodle:5.0
     ports:
-      - '8080:8080'  # Render usa el puerto 8080 por defecto.
+      - '80:8080'
+      - '443:8443'
     environment:
-      - MOODLE_DATABASE_HOST=${DATABASE_HOST}  # Lo configurarás en Render.
-      - MOODLE_DATABASE_PORT_NUMBER=5432       # Puerto de PostgreSQL.
-      - MOODLE_DATABASE_USER=${DATABASE_USER}
-      - MOODLE_DATABASE_NAME=${DATABASE_NAME}
-      - MOODLE_DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - MOODLE_DATABASE_HOST=mariadb
+      - MOODLE_DATABASE_PORT_NUMBER=3306
+      - MOODLE_DATABASE_USER=bn_moodle
+      - MOODLE_DATABASE_NAME=bitnami_moodle
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
     volumes:
-      - moodle_data:/bitnami/moodle  # Volumen para persistencia.
-volumes:
-  moodle_data:  # Render gestiona volúmenes automáticamente.
-
-# # Copyright Broadcom, Inc. All Rights Reserved.
-# # SPDX-License-Identifier: APACHE-2.0
-
-# services:
-#   mariadb:
-#     image: docker.io/bitnami/mariadb:latest
-#     environment:
-#       # ALLOW_EMPTY_PASSWORD is recommended only for development.
-#       - ALLOW_EMPTY_PASSWORD=yes
-#       - MARIADB_USER=bn_moodle
-#       - MARIADB_DATABASE=bitnami_moodle
-#       - MARIADB_CHARACTER_SET=utf8mb4
-#       - MARIADB_COLLATE=utf8mb4_unicode_ci
-#     volumes:
-#       - './mariadb-data:/bitnami/mariadb'
-#   moodle:
-#     image: docker.io/bitnami/moodle:5.0
-#     ports:
-#       - '80:8080'
-#       - '443:8443'
-#     environment:
-#       - MOODLE_DATABASE_HOST=mariadb
-#       - MOODLE_DATABASE_PORT_NUMBER=3306
-#       - MOODLE_DATABASE_USER=bn_moodle
-#       - MOODLE_DATABASE_NAME=bitnami_moodle
-#       # ALLOW_EMPTY_PASSWORD is recommended only for development.
-#       - ALLOW_EMPTY_PASSWORD=yes
-#     volumes:
-#       - './moodle:/bitnami/moodle'
-#       - './moodledata:/bitnami/moodle'
-#     depends_on:
-#       - mariadb
+      - './moodle:/bitnami/moodle'
+      - './moodledata:/bitnami/moodle'
+    depends_on:
+      - mariadb
