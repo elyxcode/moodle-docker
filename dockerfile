@@ -1,7 +1,9 @@
 FROM docker.io/bitnami/moodle:5.0
 
 # Configura las variables que Bitnami espera usando las de Render
-ENV MOODLE_DATABASE_HOST=dpg-d1okrkur433s73cgp6ag-a \
+ENV MOODLE_HTTP_PORT=8080 \
+    MOODLE_HTTPS_PORT=8443 \
+    MOODLE_DATABASE_HOST=dpg-d1okrkur433s73cgp6ag-a \
     MOODLE_DATABASE_PORT_NUMBER=5432 \
     MOODLE_DATABASE_USER=moodledb_6j47_user \
     MOODLE_DATABASE_NAME=moodledb_6j47 \
