@@ -4,8 +4,8 @@ FROM docker.io/bitnami/moodle:5.0
 # Variables de entorno (se configurarán en Render)
 ENV MOODLE_DATABASE_HOST=${DATABASE_HOST} \
     MOODLE_DATABASE_PORT_NUMBER=${DATABASE_PORT} \
-    MOODLE_DATABASE_USER=${DATABASE_USER} \
     MOODLE_DATABASE_NAME=${DATABASE_NAME} \
+    MOODLE_DATABASE_USER=${DATABASE_USER} \
     MOODLE_DATABASE_PASSWORD=${DATABASE_PASSWORD} \
     MOODLE_DATABASE_TYPE=pgsql \
     MOODLE_DATABASE_SSL_MODE=require \
@@ -16,3 +16,4 @@ EXPOSE 8080
 
 # Volumen para datos persistentes (Render lo gestiona automáticamente)
 VOLUME /bitnami/moodle
+
